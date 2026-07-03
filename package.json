@@ -1,0 +1,86 @@
+{
+	"name": "retold-monorepo-manager",
+	"version": "0.0.1",
+	"description": "Generic, config-driven monorepo manager — status, dependency-graph ripple and release tooling for any monorepo, from a plain Modules-Manifest.json.",
+	"main": "source/MonorepoManager.cjs",
+	"bin": {
+		"monorepo-manager": "./source/cli/MonorepoManager-Run.cjs",
+		"mm": "./source/cli/MonorepoManager-Run.cjs"
+	},
+	"scripts": {
+		"start": "node source/cli/MonorepoManager-Run.cjs",
+		"health": "node source/cli/MonorepoManager-Run.cjs health",
+		"web": "node source/cli/MonorepoManager-Run.cjs web",
+		"build": "cd webinterface && npm install && npm run build && cd ..",
+		"prepack": "npm run build",
+		"test": "npx mocha -u tdd -R spec test/*_tests.js",
+		"coverage": "npx quack coverage",
+		"docs": "npx quack prepare-docs ./docs",
+		"docs-serve": "npx quack docs-serve ./docs",
+		"prepublishOnly": "npm test",
+		"postversion": "npx quack release postversion",
+		"postpublish": "npx quack release postpublish",
+		"release:patch": "npx quack release patch",
+		"release:minor": "npx quack release minor",
+		"release:major": "npx quack release major",
+		"release:patch:image": "npx quack release patch --image",
+		"release:minor:image": "npx quack release minor --image",
+		"release:major:image": "npx quack release major --image",
+		"docker:build": "docker build -t monorepo-manager:local .",
+		"docker:run": "bash bin/run-local.sh",
+		"publish:docker": "npx quack release publish --image",
+		"publish:docker:local": "bash bin/publish-image-local.sh"
+	},
+	"files": [
+		"source/",
+		"docs/",
+		"webinterface/dist/",
+		"webinterface/css/",
+		"webinterface/html/",
+		"webinterface/package.json",
+		"Modules-Manifest.json",
+		"README.md",
+		"LICENSE"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/fable-retold/retold-monorepo-manager.git"
+	},
+	"author": "steven@velozo.com",
+	"license": "MIT",
+	"//deps": "CLI stack (Phases 0-2) + web server stack (Phase 3). Docker/GHCR tooling (Phase 6): Dockerfile + docker-compose.yml + bin/run-local.sh + bin/publish-image-local.sh + .github/workflows/publish-image.yml. orator-authentication is an optional peer for the Phase 3 auth seam — only required at runtime when Auth.Enabled.",
+	"dependencies": {
+		"fable": "^3.1.78",
+		"fable-serviceproviderbase": "^3.0.19",
+		"orator": "^6.1.2",
+		"orator-serviceserver-restify": "^2.0.11",
+		"pict": "^1.0.382",
+		"pict-serviceproviderbase": "^1.0.4",
+		"pict-service-commandlineutility": "^1.0.20",
+		"ws": "^8.21.0"
+	},
+	"optionalDependencies": {
+		"orator-authentication": "^1.0.6"
+	},
+	"devDependencies": {
+		"chai": "^4.3.7",
+		"mocha": "^10.2.0",
+		"quackage": "^1.3.0"
+	},
+	"mocha": {
+		"diff": true,
+		"extension": [
+			"js"
+		],
+		"package": "./package.json",
+		"reporter": "spec",
+		"slow": "75",
+		"timeout": "5000",
+		"ui": "tdd",
+		"watch-files": [
+			"source/**/*.js",
+			"source/**/*.cjs",
+			"test/**/*.js"
+		]
+	}
+}

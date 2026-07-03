@@ -1,0 +1,280 @@
+/* =====================================================================
+   Monorepo Manager — app component styles.
+
+   The look is driven by pict-section-theme: the active theme sets the
+   --theme-color-* / --brand-color-* tokens on :root, Theme-TopBar owns the
+   top chrome (brand mark + nav/user slots + theme button), and every rule
+   below reads the tokens. Switch themes in the picker and this all reskins.
+
+   The --color-* / --font-* block is just short local aliases onto the theme
+   tokens (with hex fallbacks so the app still renders if no theme provider
+   is present). --brand-color-* are NOT redefined here — the theme provider
+   sets them from the Brand block; we only reference them.
+
+   Indentation is tabs.
+   ===================================================================== */
+
+:root
+{
+	--color-bg:         var(--theme-color-background-primary,   #0e1116);
+	--color-panel:      var(--theme-color-background-panel,     #161b22);
+	--color-panel-alt:  var(--theme-color-background-tertiary,  #1c2128);
+	--color-border:     var(--theme-color-border-default,       #30363d);
+	--color-accent:     var(--theme-color-brand-primary,        #2f81f7);
+	--color-accent-dim: var(--theme-color-brand-primary-hover,  #1f6feb);
+	--color-text:       var(--theme-color-text-primary,         #e6edf3);
+	--color-muted:      var(--theme-color-text-muted,           #8b949e);
+	--color-success:    var(--theme-color-status-success,       #3fb950);
+	--color-danger:     var(--theme-color-status-error,         #f85149);
+	--color-warning:    var(--theme-color-status-warning,       #d29922);
+
+	--font-sans: var(--theme-typography-family-sans, -apple-system, BlinkMacSystemFont, 'SF Pro', 'Segoe UI', Roboto, sans-serif);
+	--font-mono: var(--theme-typography-family-mono, ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, 'Courier New', monospace);
+
+	--radius-sm: 4px;
+	--radius:    6px;
+	--radius-lg: 8px;
+
+	/* module-row status dots (action-coded) */
+	--dot-commit: var(--color-warning);
+	--dot-pull:   var(--theme-color-status-info, #4cc9d4);
+	--dot-push:   var(--color-accent);
+	--dot-pr:     var(--color-success);
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+* { box-sizing: border-box; }
+body
+{
+	font-family: var(--font-sans);
+	font-size: 14px;
+	color: var(--color-text);
+	background: var(--color-bg);
+}
+
+/* Buttons used inside the app body (module-list header, home). The topbar's
+   own buttons are Theme-TopBar's .action class — not styled here. */
+.mm-btn
+{
+	font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+	background: var(--color-panel-alt); color: var(--color-text);
+	border: 1px solid var(--color-border); border-radius: var(--radius);
+	padding: 5px 11px;
+	transition: border-color 0.1s, background 0.1s, color 0.1s;
+}
+.mm-btn:hover { border-color: var(--color-accent); background: var(--color-panel); }
+.mm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.mm-btn.mm-btn-primary
+{
+	background: transparent; border-color: var(--color-accent); color: var(--color-accent);
+}
+.mm-btn.mm-btn-primary:hover { background: var(--theme-color-background-hover, rgba(47, 129, 247, 0.1)); }
+/* toggle "on" state (e.g. the module-list "time" sort button) */
+.mm-btn.is-active { border-color: var(--color-accent); color: var(--color-accent); }
+
+/* =====================================================================
+   Module list — header / filter / group headers / rows / badges
+   ===================================================================== */
+.mm-modulelist { height: 100%; overflow: auto; background: var(--color-panel); }
+
+.mm-modulelist-header
+{
+	display: flex; align-items: center; gap: 6px;
+	padding: 6px 8px; position: sticky; top: 0; z-index: 1;
+	background: var(--color-panel);
+	border-bottom: 1px solid var(--color-border);
+}
+.mm-modulelist-header input
+{
+	flex: 1; min-width: 0;
+	font-family: var(--font-sans); font-size: 13px; padding: 6px 10px;
+	background: var(--color-bg); color: var(--color-text);
+	border: 1px solid var(--color-border); border-radius: var(--radius);
+}
+.mm-modulelist-header input:focus { outline: none; border-color: var(--color-accent); }
+.mm-modulelist-header .mm-btn { padding: 5px 9px; }
+.mm-modulelist-header .mm-cell { margin-left: auto; }
+
+.mm-grouphdr
+{
+	padding: 10px 12px 4px;
+	font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+	text-transform: uppercase; letter-spacing: 0.08em;
+	color: var(--color-muted); background: transparent;
+}
+
+.mm-row
+{
+	display: flex; align-items: center; gap: 8px; padding: 5px 12px;
+	font-family: var(--font-mono); font-size: 12.5px;
+	color: var(--color-text); text-decoration: none; cursor: pointer;
+	border-left: 2px solid transparent; border-bottom: 1px solid transparent;
+}
+.mm-row:hover { background: var(--color-panel-alt); }
+.mm-row.mm-row-selected { background: var(--color-panel-alt); border-left-color: var(--color-accent); }
+.mm-row .mm-name { flex: 1; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.mm-badge { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.mm-badge-commit { background: var(--dot-commit); }
+.mm-badge-push   { background: var(--dot-push); }
+.mm-badge-pull   { background: var(--dot-pull); }
+.mm-badge-insync { background: var(--dot-pr); }
+
+.mm-cell { font-family: var(--font-mono); font-size: 10px; color: var(--color-muted); white-space: nowrap; }
+.mm-cell-num { font-variant-numeric: tabular-nums; }
+
+.mm-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12px; }
+.mm-table th
+{
+	text-align: left; padding: 6px 10px; color: var(--color-muted); font-weight: 600;
+	background: var(--color-panel); border-bottom: 1px solid var(--color-border);
+	position: sticky; top: 0; text-transform: uppercase; letter-spacing: 0.04em; font-size: 10px;
+}
+.mm-table td { padding: 5px 10px; white-space: nowrap; color: var(--color-text); border-bottom: 1px solid var(--color-border); }
+.mm-table tr { cursor: pointer; }
+.mm-table tbody tr:hover td { background: var(--color-panel-alt); }
+
+/* =====================================================================
+   Home / empty-state
+   ===================================================================== */
+.mm-home { padding: 40px 30px; }
+.mm-home h2
+{
+	display: inline-block; margin: 0 0 12px;
+	font-family: var(--font-sans); font-weight: 500; font-size: 22px;
+	color: var(--color-text); padding-bottom: 6px;
+	/* brand-accent underline — --brand-color-secondary is set by the theme provider from the Brand */
+	border-bottom: 3px solid var(--brand-color-secondary, var(--color-accent));
+}
+.mm-home p.mm-muted { max-width: 640px; line-height: 1.5; }
+.mm-muted { color: var(--color-muted); }
+
+.mm-stat { display: inline-block; margin-right: 34px; }
+.mm-stat .n { display: block; font-family: var(--font-mono); font-size: 30px; font-weight: 700; line-height: 1.1; color: var(--color-text); }
+.mm-stat .l { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-muted); }
+.mm-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+
+/* =====================================================================
+   Output panel
+   ===================================================================== */
+.mm-output { height: 100%; display: flex; flex-direction: column; background: var(--color-panel-alt); color: var(--color-text); }
+.mm-output-head
+{
+	display: flex; align-items: center; gap: 10px; padding: 4px 12px;
+	font-family: var(--font-mono); font-size: 11px; color: var(--color-muted);
+	border-bottom: 1px solid var(--color-border);
+}
+.mm-output-body
+{
+	flex: 1; overflow: auto; padding: 8px 12px;
+	background: var(--color-bg); color: var(--color-text);
+	font-family: var(--font-mono); font-size: 11px; white-space: pre-wrap; line-height: 1.4;
+}
+.mm-output-body .err { color: var(--color-danger); }
+
+/* =====================================================================
+   Module workspace (center detail)
+   ===================================================================== */
+.mm-workspace { padding: 22px 26px; overflow: auto; height: 100%; }
+.mm-workspace h2 { margin: 0 0 6px; font-family: var(--font-mono); font-weight: 600; font-size: 20px; color: var(--color-text); }
+.mm-workspace .mm-sub { color: var(--color-muted); margin-bottom: 16px; font-family: var(--font-mono); font-size: 12px; }
+.mm-workspace .mm-sub a { color: var(--color-accent); text-decoration: none; }
+.mm-workspace .mm-sub a:hover { text-decoration: underline; }
+.mm-workspace h3 { font-family: var(--font-sans); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--color-muted); }
+.mm-infogrid { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; margin: 12px 0; font-family: var(--font-mono); font-size: 12.5px; }
+.mm-infogrid .k { color: var(--color-muted); }
+.mm-workspace code { font-family: var(--font-mono); color: var(--color-accent); }
+
+/* changed-files staging list */
+.mm-file-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-family: var(--font-mono); font-size: 12px; }
+.mm-file-badge { flex: 0 0 auto; min-width: 64px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; padding: 1px 6px; border-radius: 8px; }
+.mm-file-badge.mm-file-staged { background: var(--theme-color-status-success-tint, rgba(63,185,80,0.14)); color: var(--color-success); }
+.mm-file-badge.mm-file-unstaged { background: var(--theme-color-status-warning-tint, rgba(210,153,34,0.14)); color: var(--color-warning); }
+.mm-file-badge.mm-file-untracked { background: var(--color-panel-alt); color: var(--color-muted); }
+.mm-file-x { color: var(--color-muted); }
+.mm-file-path { flex: 1 1 auto; color: var(--color-text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-file-btn { flex: 0 0 auto; font-family: var(--font-mono); font-size: 11px; padding: 1px 8px; cursor: pointer;
+	background: transparent; color: var(--color-muted); border: 1px solid var(--color-border); border-radius: var(--radius-sm); }
+.mm-file-btn:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+/* =====================================================================
+   Bulk wizard (the wizard view injects layout-only CSS; colors come here)
+   ===================================================================== */
+.mm-oplist { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin: 14px 0; }
+.mm-opcard { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 10px 12px; cursor: pointer; background: var(--color-panel); }
+.mm-opcard:hover { border-color: var(--color-accent); }
+.mm-opcard-selected { border-color: var(--color-accent); background: var(--color-panel-alt); box-shadow: inset 0 0 0 1px var(--color-accent); }
+.mm-opcard-label { font-family: var(--font-sans); font-weight: 600; color: var(--color-text); }
+.mm-opcard-desc  { font-family: var(--font-sans); font-size: 12px; color: var(--color-muted); margin-top: 3px; }
+
+.mm-choose-detail { margin-top: 8px; border-top: 1px solid var(--color-border); padding-top: 12px; }
+.mm-modulecheck   { display: flex; flex-wrap: wrap; gap: 4px 16px; max-height: 240px; overflow: auto; margin: 8px 0; }
+.mm-check         { font-family: var(--font-mono); font-size: 12px; display: inline-flex; align-items: center; gap: 5px; color: var(--color-text); }
+
+.mm-preview       { display: flex; gap: 24px; margin: 12px 0; }
+.mm-preview-graph { flex: none; }
+.mm-preview-steps { flex: 1; }
+.mm-prevstep      { padding: 3px 0; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-text); }
+
+.mm-badge-confirm
+{
+	font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px;
+	background: var(--brand-color-secondary, var(--color-warning)); color: var(--theme-color-text-on-brand, #ffffff);
+	border-radius: var(--radius-sm); padding: 1px 5px; margin-left: 4px;
+}
+
+.mm-runsteps { margin: 12px 0; }
+.mm-runstep  { padding: 4px 0; font-family: var(--font-mono); font-size: 12.5px; color: var(--color-text); border-bottom: 1px solid var(--color-border); }
+
+.mm-pill { font-family: var(--font-mono); font-size: 11px; border-radius: 10px; padding: 1px 8px; color: var(--theme-color-text-on-brand, #ffffff); }
+.mm-pill-pending   { background: var(--color-muted); }
+.mm-pill-running   { background: var(--color-accent); }
+.mm-pill-complete  { background: var(--color-success); }
+.mm-pill-error,
+.mm-pill-failed    { background: var(--color-danger); }
+.mm-pill-skipped   { background: var(--color-muted); }
+.mm-pill-waiting   { background: var(--color-warning); }
+.mm-pill-cancelled { background: var(--color-muted); }
+
+.mm-a-complete { color: var(--color-success); }
+.mm-a-running  { color: var(--color-accent); }
+.mm-a-error    { color: var(--color-danger); }
+.mm-a-pending  { color: var(--color-muted); }
+.mm-a-skipped  { color: var(--color-muted); }
+
+.mm-gate
+{
+	border: 1px solid var(--brand-color-secondary, var(--color-warning));
+	background: var(--color-panel-alt); border-radius: var(--radius-lg); padding: 12px 14px; margin: 12px 0;
+	color: var(--color-text);
+}
+
+/* =====================================================================
+   pict-section-modal shell/dock theming — map the modal vars onto the
+   active theme so the dock panels / dropdowns / dialogs follow it too.
+   ===================================================================== */
+body.pict-modal-root
+{
+	--pict-modal-bg:                    var(--color-panel);
+	--pict-modal-fg:                    var(--color-text);
+	--pict-modal-border:                var(--color-border);
+	--pict-modal-header-bg:             var(--color-panel-alt);
+	--pict-modal-header-fg:             var(--color-text);
+	--pict-modal-header-border:         var(--color-border);
+	--pict-modal-btn-bg:                var(--color-panel-alt);
+	--pict-modal-btn-fg:                var(--color-text);
+	--pict-modal-btn-primary-bg:        var(--color-accent);
+	--pict-modal-btn-primary-fg:        var(--theme-color-text-on-brand, #ffffff);
+	--pict-modal-btn-primary-hover-bg:  var(--color-accent-dim);
+	--pict-modal-btn-danger-bg:         var(--color-danger);
+	--pict-modal-btn-danger-fg:         #ffffff;
+	--pict-modal-btn-success-bg:        var(--color-success);
+	--pict-modal-btn-success-fg:        #ffffff;
+	--pict-modal-dropdown-bg:           var(--color-panel);
+	--pict-modal-dropdown-fg:           var(--color-text);
+	--pict-modal-dropdown-border:       var(--color-border);
+	--pict-modal-tooltip-bg:            var(--color-panel-alt);
+	--pict-modal-tooltip-fg:            var(--color-text);
+}

@@ -1,0 +1,24 @@
+# Run the monorepo manager against a monorepo on your machine.
+#
+#   MONOREPO=/absolute/path/to/your/monorepo docker compose up --build
+#
+# Then open http://localhost:44444. The mounted monorepo must have a Modules-Manifest.json at (or
+# above) its root — the server finds it git-style by walking up from /monorepo. If your monorepo
+# doesn't have one yet, generate it first:
+#
+#   mm manifest migrate  --input <Existing-Manifest>.json   # from a retold-style manifest, or
+#   mm manifest backfill --write                            # synthesize one by scanning folders
+services:
+  monorepo-manager:
+    build: .
+    image: monorepo-manager:local
+    ports:
+      - "${MM_PORT:-44444}:44444"
+    volumes:
+      # The monorepo you want to manage — REQUIRED. Set MONOREPO to its absolute path.
+      - "${MONOREPO:?set MONOREPO=/absolute/path/to/your/monorepo}:/monorepo"
+      # Optional: git identity + credentials so commit / push work from inside the container.
+      # Uncomment as needed (read-only mounts).
+      # - "${HOME}/.gitconfig:/root/.gitconfig:ro"
+      # - "${HOME}/.ssh:/root/.ssh:ro"
+    restart: unless-stopped

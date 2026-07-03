@@ -1,0 +1,19 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "monorepo-manager-web",
+			"comment": "Runs `mm web` against this repo's own sample Modules-Manifest.json (walk-up). Point --manifest at a real monorepo to manage it.",
+			"runtimeExecutable": "node",
+			"runtimeArgs": [
+				"source/cli/MonorepoManager-Run.cjs",
+				"web",
+				"--port",
+				"44444",
+				"--host",
+				"127.0.0.1"
+			],
+			"port": 44444
+		}
+	]
+}

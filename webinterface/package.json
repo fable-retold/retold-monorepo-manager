@@ -1,0 +1,65 @@
+{
+	"name": "monorepo-manager-webinterface",
+	"version": "0.0.1",
+	"description": "Monorepo Manager web interface (Pict application)",
+	"main": "source/MonorepoManager-Application.js",
+	"scripts": {
+		"start": "node source/MonorepoManager-Application.js",
+		"build": "npx quack build && npx quack copy"
+	},
+	"author": "steven@velozo.com",
+	"license": "MIT",
+	"dependencies": {
+		"pict": "^1.0.382",
+		"pict-application": "^1.0.33",
+		"pict-provider": "^1.0.12",
+		"pict-router": "^1.0.9",
+		"pict-section-modal": "^1.0.0",
+		"pict-section-theme": "^1.0.0",
+		"pict-view": "^1.0.67"
+	},
+	"devDependencies": {
+		"quackage": "^1.3.0"
+	},
+	"copyFilesSettings": {
+		"whenFileExists": "overwrite"
+	},
+	"copyFiles": [
+		{
+			"from": "./html/*",
+			"to": "./dist/"
+		},
+		{
+			"from": "./css/**",
+			"to": "./dist/css/"
+		},
+		{
+			"from": "./favicons/*",
+			"to": "./dist/favicons/"
+		},
+		{
+			"from": "./node_modules/pict/dist/*",
+			"to": "./dist/js/"
+		}
+	],
+	"retold": {
+		"brand": {
+			"Hash": "monorepo-manager-webinterface",
+			"Name": "Monorepo Manager",
+			"Tagline": "Status, bulk operations, and ripple-publish across every module",
+			"Palette": "ocean",
+			"Icon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 96\" width=\"96\" height=\"96\">\n\t\t<defs>\n\t\t\t<clipPath id=\"frame-monorepo-manager-webinterface-filled-light\">\n\t\t\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\"/>\n\t\t\t</clipPath>\n\t\t</defs>\n\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\" fill=\"#2b9ea2\"/>\n\t\t<g clip-path=\"url(#frame-monorepo-manager-webinterface-filled-light)\"><defs><mask id=\"_cr_7374\"><rect x=\"0\" y=\"0\" width=\"96\" height=\"96\" fill=\"#fff\"/>\n\t\t\t\t\t\t<circle cx=\"32\" cy=\"48\" r=\"32\" fill=\"#000\"/></mask></defs>\n\t\t\t\t\t<circle cx=\"48\" cy=\"48\" r=\"32\" fill=\"rgba(255,255,255,0.18)\" mask=\"url(#_cr_7374)\"/>\n\t\t\t\t\t<circle cx=\"32\" cy=\"48\" r=\"26\" fill=\"#da8962\" opacity=\"0.7\"/></g>\n\t\t<text x=\"48\" y=\"50\" text-anchor=\"middle\" dominant-baseline=\"central\"\n\t\t\tfont-family=\"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif\"\n\t\t\tfont-size=\"28\" font-weight=\"600\"\n\t\t\tfill=\"#ffffff\" letter-spacing=\"-1\">MMW</text>\n\t</svg>",
+			"IconType": "svg",
+			"Favicon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 96\" width=\"96\" height=\"96\">\n\t\t<defs>\n\t\t\t<clipPath id=\"fav-monorepo-manager-webinterface-light\">\n\t\t\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\"/>\n\t\t\t</clipPath>\n\t\t</defs>\n\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\" fill=\"#2b9ea2\"/>\n\t\t<g clip-path=\"url(#fav-monorepo-manager-webinterface-light)\"><circle cx=\"48\" cy=\"48\" r=\"36\" fill=\"rgba(255,255,255,0.22)\"/></g>\n\t\t<text x=\"48\" y=\"50\" text-anchor=\"middle\" dominant-baseline=\"central\"\n\t\t\tfont-family=\"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif\"\n\t\t\tfont-size=\"60\" font-weight=\"800\"\n\t\t\tfill=\"#ffffff\" letter-spacing=\"-1\">M</text>\n\t</svg>",
+			"FaviconDark": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96 96\" width=\"96\" height=\"96\">\n\t\t<defs>\n\t\t\t<clipPath id=\"fav-monorepo-manager-webinterface-dark\">\n\t\t\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\"/>\n\t\t\t</clipPath>\n\t\t</defs>\n\t\t<path d=\"M 48.00 2.00 L 87.84 25.00 L 87.84 71.00 L 48.00 94.00 L 8.16 71.00 L 8.16 25.00 Z\" fill=\"#5ec8cc\"/>\n\t\t<g clip-path=\"url(#fav-monorepo-manager-webinterface-dark)\"><circle cx=\"48\" cy=\"48\" r=\"36\" fill=\"rgba(255,255,255,0.22)\"/></g>\n\t\t<text x=\"48\" y=\"50\" text-anchor=\"middle\" dominant-baseline=\"central\"\n\t\t\tfont-family=\"-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif\"\n\t\t\tfont-size=\"60\" font-weight=\"800\"\n\t\t\tfill=\"#101418\" letter-spacing=\"-1\">M</text>\n\t</svg>",
+			"Colors": {
+				"Primary": "#2b9ea2",
+				"Secondary": "#da8962",
+				"PrimaryLight": "#2b9ea2",
+				"PrimaryDark": "#5ec8cc",
+				"SecondaryLight": "#da8962",
+				"SecondaryDark": "#e9c2af"
+			}
+		}
+	}
+}

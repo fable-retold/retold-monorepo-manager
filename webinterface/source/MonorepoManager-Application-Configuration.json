@@ -1,0 +1,11 @@
+{
+	"Name": "Monorepo Manager",
+	"Hash": "MonorepoManager",
+	"MainViewportViewIdentifier": "Manager-Layout",
+	"MainViewportDestinationAddress": "#MonorepoManager-Application-Container",
+	"MainViewportDefaultDataAddress": "AppData.Manager",
+	"AutoSolveAfterInitialize": true,
+	"AutoRenderMainViewportViewAfterInitialize": false,
+	"AutoRenderViewsAfterInitialize": false,
+	"pict_configuration": { "Product": "MonorepoManager" }
+}

@@ -1,0 +1,37 @@
+# Installed / built artifacts — reinstalled and rebuilt inside the image.
+node_modules
+**/node_modules
+dist
+**/dist
+
+# VCS / editor / CI cruft.
+.git
+.gitignore
+.github
+.vscode
+.idea
+.DS_Store
+
+# Machine-specific quackage config (absolute host paths) — regenerated in-build with /app paths.
+.gulpfile-quackage.js
+.gulpfile-quackage-config.json
+webinterface/.gulpfile-quackage.js
+webinterface/.gulpfile-quackage-config.json
+
+# Durable run manifests + operation logs — runtime state, never baked into an image.
+.monorepo-manager-runs
+**/.monorepo-manager-runs
+*.log
+Monorepo-Manager-Operations-*.log
+
+# Test scratch + local tooling.
+.test_*
+**/.test_*
+.nyc_output
+coverage
+scratchpad
+
+# Docker artifacts themselves.
+Dockerfile
+.dockerignore
+docker-compose.yml

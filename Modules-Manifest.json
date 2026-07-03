@@ -1,0 +1,57 @@
+{
+	"SchemaVersion": "2.0",
+	"Name": "retold-monorepo-manager (sample)",
+	"Description": "Self-describing sample manifest used for this repo's own dev/test. Replace with your monorepo's manifest, or generate one with `mm manifest backfill`.",
+
+	"RepoRoot": null,
+	"GitRemote": "origin",
+	"DefaultBranch": "main",
+
+	"Org": "fable-retold",
+	"GitTemplate": "https://github.com/{org}/{name}.git",
+	"DocsTemplate": "https://{org}.github.io/{name}/",
+
+	"EcosystemMembership": { "Mode": "manifest", "Scopes": [] },
+
+	"Ripple":
+	{
+		"GroupOrder": [],
+		"ConsumerBump": "patch",
+		"ProducerBump": "patch",
+		"WaitForIndex": true,
+		"ProducerActions": [ "preflight-clean-tree", "bump-if-needed", "publish", "wait-for-index", "commit-final", "push" ],
+		"ConsumerActions": [ "preflight-clean-tree", "update-dep", "install", "test", "commit", "bump", "publish", "wait-for-index", "commit-final", "push" ]
+	},
+
+	"VersionSource": "highest-in-repo",
+
+	"Docs": { "Path": "docs", "Engine": "npx quack prepare-docs ./docs" },
+	"Logging": { "LogFilePrefix": "Monorepo-Manager-Operations-", "LogDir": ".", "Sink": "file" },
+	"Auth": { "Enabled": false, "Provider": null },
+	"WebServer": { "Port": 44444, "Host": "127.0.0.1" },
+
+	"Groups":
+	[
+		{
+			"Name": "Root",
+			"Description": "This repository, described as a single-module monorepo for dev/test. Point the tool at a real monorepo's manifest to see it manage many modules.",
+			"Path": ".",
+			"Discover": [ "*" ],
+			"ModuleMarker": "package.json",
+			"Modules":
+			[
+				{
+					"Name": "retold-monorepo-manager",
+					"Path": ".",
+					"Type": "app",
+					"Description": "This tool — a generic, config-driven monorepo manager.",
+					"GitHub": null,
+					"Documentation": false,
+					"DocsPath": "docs",
+					"RelatedModules": [],
+					"Service": { "Entry": "source/cli/MonorepoManager-Run.cjs", "Port": 44444, "StartCommand": "node source/cli/MonorepoManager-Run.cjs web" }
+				}
+			]
+		}
+	]
+}
