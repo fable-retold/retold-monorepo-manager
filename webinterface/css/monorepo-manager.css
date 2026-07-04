@@ -40,6 +40,10 @@
 	--dot-pull:   var(--theme-color-status-info, #4cc9d4);
 	--dot-push:   var(--color-accent);
 	--dot-pr:     var(--color-success);
+	/* next-action chip palette — reuse the module-row dot tokens */
+	--next-commit: var(--dot-commit);
+	--next-pull:   var(--dot-pull);
+	--next-push:   var(--dot-push);
 }
 
 /* =====================================================================
@@ -278,3 +282,119 @@ body.pict-modal-root
 	--pict-modal-tooltip-bg:            var(--color-panel-alt);
 	--pict-modal-tooltip-fg:            var(--color-text);
 }
+
+/* =====================================================================
+   Module workspace — header, info box, action groups, deps (parity)
+   ===================================================================== */
+.mm-workspace { position: relative; }
+
+/* ---- workspace header ---- */
+.mm-ws-header
+{
+	display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+	padding-bottom: 10px; margin-bottom: 4px;
+	border-bottom: 1px solid var(--color-border);
+	padding-right: 336px; /* clear the floating info box */
+}
+.mm-ws-name    { font-family: var(--font-mono); font-size: 18px; font-weight: 600; color: var(--color-text); }
+.mm-ws-version { font-family: var(--font-mono); color: var(--color-muted); font-size: 12px; }
+.mm-ws-branch  { font-family: var(--font-mono); color: var(--color-accent); font-size: 12px; }
+.mm-type-badge
+{
+	font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em;
+	color: var(--color-muted); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1px 6px;
+}
+.mm-ws-header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.mm-ws-link { color: var(--color-accent); text-decoration: none; font-size: 12px; font-family: var(--font-mono); }
+.mm-ws-link:hover { text-decoration: underline; }
+.mm-ws-desc { color: var(--color-muted); margin: 8px 0 4px; max-width: 720px; line-height: 1.5; }
+
+/* ---- dirty dot + next-action chip ---- */
+.mm-dirty { font-size: 11px; }
+.mm-dirty-unstaged { color: var(--color-warning); }
+.mm-dirty-staged   { color: var(--dot-pull); }
+.mm-dirty-unpushed { color: var(--color-accent); }
+.mm-next
+{
+	font-family: var(--font-mono); font-size: 11px; font-weight: 600; white-space: nowrap;
+	padding: 1px 7px; border-radius: 9px; color: var(--theme-color-text-on-brand, #0e1116);
+}
+.mm-next-commit { background: var(--next-commit); }
+.mm-next-pull   { background: var(--next-pull); }
+.mm-next-push   { background: var(--next-push); }
+.mm-next-none   { background: transparent; color: var(--color-muted); font-weight: 400; padding-left: 0; }
+
+/* ---- floating info box ---- */
+.mm-infobox
+{
+	position: absolute; top: 12px; right: 16px; width: 312px; max-width: 40vw;
+	max-height: calc(100% - 32px);
+	background: var(--color-panel); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+	box-shadow: 0 4px 18px var(--theme-color-shadow, rgba(0, 0, 0, 0.45));
+	z-index: 20; font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+	overflow: hidden; display: flex; flex-direction: column;
+}
+.mm-infobox .mm-ib-header
+{
+	display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+	background: var(--color-panel-alt); border-bottom: 1px solid var(--color-border); user-select: none;
+}
+.mm-infobox.mm-collapsed .mm-ib-header { border-bottom: 0; }
+.mm-ib-name    { font-weight: 600; color: var(--color-text); flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-ib-version { color: var(--color-muted); }
+.mm-ib-toggle  { width: 12px; text-align: center; color: var(--color-muted); }
+.mm-ib-toggle::after { content: '▾'; }
+.mm-infobox.mm-collapsed .mm-ib-toggle::after { content: '▸'; }
+.mm-infobox .mm-ib-body { padding: 10px 12px; overflow-y: auto; cursor: default; }
+.mm-infobox.mm-collapsed .mm-ib-body { display: none; }
+.mm-ib-section { margin-bottom: 10px; }
+.mm-ib-section:last-child { margin-bottom: 0; }
+.mm-ib-section h4
+{
+	margin: 0 0 6px; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em;
+	color: var(--color-muted); font-weight: 600;
+}
+.mm-kv { display: grid; grid-template-columns: 116px 1fr; row-gap: 2px; font-size: 11.5px; margin: 0; }
+.mm-kv dt { color: var(--color-muted); }
+.mm-kv dd { margin: 0; color: var(--color-text); }
+
+/* ---- action groups ---- */
+.mm-action-groups { display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 14px 0 18px; align-items: flex-end; }
+.mm-action-group { display: flex; flex-direction: column; min-width: 0; }
+.mm-action-group-label
+{
+	font-family: var(--font-sans); font-size: 10.5px; color: var(--color-muted);
+	letter-spacing: 0.06em; text-transform: uppercase; padding: 0 2px 4px;
+	border-bottom: 1px solid var(--color-border); margin-bottom: 6px; text-align: center;
+}
+.mm-action-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.mm-btn.mm-action-more
+{
+	display: inline-flex; align-items: center; justify-content: center;
+	padding: 5px 8px; min-width: 26px; color: var(--color-accent);
+}
+
+/* ---- dependency + related sections ---- */
+.mm-ws-section { margin: 16px 0; }
+.mm-ws-section h3
+{
+	font-family: var(--font-sans); font-weight: 600; font-size: 12px; text-transform: uppercase;
+	letter-spacing: 0.4px; color: var(--color-muted); margin: 0 0 8px;
+}
+.mm-dep-section
+{
+	background: var(--theme-color-background-subtle, rgba(255, 255, 255, 0.025));
+	border: 1px solid var(--color-border); border-radius: var(--radius); padding: 10px 12px;
+}
+.mm-dep-table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 0; font-family: var(--font-mono); font-size: 12px; }
+.mm-dep-table td { padding: 2px 6px; }
+.mm-dep-table tbody tr:hover td { background: var(--color-panel-alt); }
+.mm-dep-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-dep-name a { color: var(--color-accent); text-decoration: none; }
+.mm-dep-name a:hover { text-decoration: underline; }
+.mm-dep-name.mm-dep-external { color: var(--color-muted); }
+.mm-dep-range { color: var(--color-text); opacity: 0.7; white-space: nowrap; width: 128px; text-align: right; }
+.mm-related-row { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+
+/* ---- changed-files rollup ---- */
+.mm-file-rollup { font-family: var(--font-mono); font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--color-muted); margin-left: 6px; }
