@@ -118,6 +118,13 @@ body
 .mm-modulelist-header input:focus { outline: none; border-color: var(--color-accent); }
 .mm-modulelist-header .mm-btn { padding: 5px 9px; }
 .mm-modulelist-header .mm-cell { margin-left: auto; }
+.mm-ml-filter
+{
+	display: flex; align-items: center; gap: 6px;
+	padding: 4px 10px 2px; font-size: 11px; color: var(--color-muted);
+	font-family: var(--font-sans); cursor: pointer; user-select: none;
+}
+.mm-ml-filter input { accent-color: var(--color-accent); cursor: pointer; margin: 0; }
 
 .mm-grouphdr
 {

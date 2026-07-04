@@ -25,6 +25,12 @@ class ManagerModuleListView extends libPictView
 		let tmpScan = tmpManager.Scan.Results || {};
 		let tmpModules = tmpManager.Modules || [];
 
+		if (tmpManager.ModuleListNeedsAction === undefined)
+		{
+			try { tmpManager.ModuleListNeedsAction = (window.localStorage.getItem('mm:needsAction') === '1'); } catch (pError) { tmpManager.ModuleListNeedsAction = false; }
+		}
+		let tmpNeedsOnly = !!tmpManager.ModuleListNeedsAction;
+
 		let tmpRows = [];
 		for (let i = 0; i < tmpModules.length; i++)
 		{
@@ -33,6 +39,7 @@ class ManagerModuleListView extends libPictView
 			let tmpEntry = tmpScan[tmpModule.Name] || {};
 			let tmpBadge = libScanState.badgeState(tmpEntry);
 			let tmpNext = libScanState.nextAction(tmpEntry);
+			if (tmpNeedsOnly && (!tmpNext || tmpNext === 'in-sync')) { continue; }
 			let tmpAhead = tmpEntry.Ahead || 0;
 			let tmpBehind = tmpEntry.Behind || 0;
 			tmpRows.push(
@@ -86,6 +93,7 @@ class ManagerModuleListView extends libPictView
 				SortByTime: tmpSortByTime,
 				SortToggleClass: tmpSortByTime ? 'is-active' : '',
 				SortToggleTitle: tmpSortByTime ? 'Sorting by recent use — click for grouped view' : 'Sort by most-recently-opened',
+				NeedsActionChecked: tmpNeedsOnly ? 'checked' : '',
 				Query: tmpManager.ModuleListQuery || '',
 				ScanMeta: tmpManager.Scan.Running ? 'scanning…' : (tmpRows.length + ' modules'),
 				Rows: tmpRows,
@@ -146,6 +154,13 @@ class ManagerModuleListView extends libPictView
 		this.render();
 	}
 
+	toggleNeedsAction(pChecked)
+	{
+		this.pict.AppData.Manager.ModuleListNeedsAction = !!pChecked;
+		try { window.localStorage.setItem('mm:needsAction', pChecked ? '1' : '0'); } catch (pError) { /* ignore */ }
+		this.render();
+	}
+
 	toggleDock()
 	{
 		let tmpCurrent = this.pict.AppData.Manager.DockPosition || 'side';
@@ -181,6 +196,7 @@ ManagerModuleListView.default_configuration =
 		<button class="mm-btn {~D:Record.SortToggleClass~}" title="{~D:Record.SortToggleTitle~}" onclick="_Pict.views['Manager-ModuleList'].toggleSort()">time</button>
 		<button class="mm-btn" title="Move the list" onclick="_Pict.views['Manager-ModuleList'].toggleDock()">{~D:Record.DockToggleLabel~}</button>
 	</div>
+	<label class="mm-ml-filter" title="Only show modules with a pending next action"><input type="checkbox" {~D:Record.NeedsActionChecked~} onchange="_Pict.views['Manager-ModuleList'].toggleNeedsAction(this.checked)"> needs action</label>
 	<div class="mm-grouphdr">{~D:Record.ScanMeta~}</div>
 	{~TS:Manager-ModuleList-Group:Record.Groups~}
 </div>`
@@ -213,6 +229,7 @@ ManagerModuleListView.default_configuration =
 		<button class="mm-btn" title="Move the list" onclick="_Pict.views['Manager-ModuleList'].toggleDock()">{~D:Record.DockToggleLabel~}</button>
 		<span class="mm-cell">{~D:Record.ScanMeta~}</span>
 	</div>
+	<label class="mm-ml-filter" title="Only show modules with a pending next action"><input type="checkbox" {~D:Record.NeedsActionChecked~} onchange="_Pict.views['Manager-ModuleList'].toggleNeedsAction(this.checked)"> needs action</label>
 	<table class="mm-table">
 		<thead><tr><th>Module</th><th>Branch</th><th>±origin</th><th>Next</th><th>Local</th><th>Published</th></tr></thead>
 		<tbody>{~TS:Manager-ModuleList-WideRow:Record.Rows~}</tbody>
