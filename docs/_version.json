@@ -1,0 +1,7 @@
+{
+	"Name": "retold-monorepo-manager",
+	"Version": "0.0.1",
+	"Description": "Generic, config-driven monorepo manager — status, dependency-graph ripple publishing, dep audits, service supervision and manifest hygiene for any monorepo, from a plain Modules-Manifest.json. One shared core drives a headless CLI and a web UI.",
+	"GeneratedAt": "2026-07-04T00:00:00.000Z",
+	"GitCommit": "ac7f4eb"
+}
