@@ -6,8 +6,9 @@
  * Home / Bulk-ops links + the server-health badge. Mounted automatically by Theme-TopBar via
  * `NavView: 'Manager-TopBar-Nav'` in the Theme-Section provider's ViewOptions.
  *
- * The `.action` / `.badge` classes are provided (and themed) by Theme-TopBar — we don't re-style them.
- * `aria-current="page"` on the active route's button lights it up via Theme-TopBar's own CSS.
+ * Theme-TopBar provides the nav *slot* + the active-item (`aria-current="page"`) style, but NOT the base
+ * button chrome — so `.action` is styled in the app's own CSS (css/monorepo-manager.css). Without that the
+ * buttons fall through to raw native OS button rendering (`appearance:auto`).
  */
 const libPictView = require('pict-view');
 
